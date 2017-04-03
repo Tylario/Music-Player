@@ -1,0 +1,228 @@
+
+<html>
+<head>
+	<title>New Tab</title>
+</head>
+<style>
+
+	body{
+		background-color:white;
+		overflow-y:hidden;
+		overflow-x:hidden;
+	}
+
+	#container{
+		position: absolute;
+		width:450px;
+		height:450px;
+		background-color:#ffffff;
+		left:50%;
+		bottom:50%;
+		margin-bottom:-225px;
+		margin-left:-225px;
+		border:0px #9f9f9f solid;
+	}
+
+	#title_text{
+		position:absolute;
+		color:black;
+		font-size:35;
+		width:100%;
+		top:0%;
+	}
+
+	#artist_text{
+		position:absolute;
+		color:darkgray;
+		font-size:15;
+		width:100%;
+		top:8.5%;
+	}
+
+	#play{
+		position:absolute;
+		width:10%;
+		left:210px;
+		bottom:0%;
+	}
+
+	#restart{
+		position:absolute;
+		width:10%;
+		left:170px;
+		bottom:0%;
+	}
+
+	#skip{
+		position:absolute;
+		width:10%;
+		left:250px;
+		bottom:0%;
+	}
+
+	#image{
+		position:absolute;
+		height:350px;
+		width:350px;
+		top:65px;
+		left:52px;
+	}
+
+	#cover{
+		position:absolute;
+		width:700px;
+		height:540px;
+		left:200%;
+		bottom:50%;
+		margin-bottom:-270px;
+		margin-left:-350px;
+	}
+
+</style>
+<body onload="pick()">
+	<div id="container">
+	<br><br>
+	<center>
+		<div id="title_text">
+			<span id="title"></span>
+		</div>
+		<br>
+		<div id="artist_text">
+			<span id="artist"></span>
+		</div>
+	</center>
+		<div id="play">
+			<center>
+				<img id="player" src='image/pause.png' onclick='pause()'>
+			</center>
+		</div>
+		<div id="skip">
+			<center>
+				<img id="skipper" src='image/skip.png' onclick='pick()'>
+			</center>
+		</div>
+		<div id="restart">
+			<center>
+				<img id="re" src='image/restart.png' onclick='restart()'>
+			</center>
+		</div>
+
+		<div id="image">
+			<center>
+				<img height="350px" width="350px" src="" id="images">
+			</center>
+		</div>
+	</div>
+		<div id="cover">
+			<img id='google' height='540px' width="700px" src='image/google.png'>
+		</div>
+
+</body>
+<script>
+// Media Player by Tyler Hudson
+
+	var playlist = [
+		// ['name of song', 'artist', 'sound/file.mp3', 'image/file.png', false, number of seconds]
+		['code', 'code', 'code', 'code', true, 99999999],
+		['Aint no rest for the Wicked', 'Cage the Elephants','sound/Aint no Rest for the Wicked.mp3', 'image/Cage the Elephants.jpg', false, (3*60)+4],
+		['American Idiot', 'Greenday','sound/American Idiot.mp3', 'image/Greenday.jpg', false, (2*60)+58],
+		['Bleeding Out', 'Imagine Dragons', 'sound/Bleeding Out.mp3', 'image/Imagine Dragons.jpg', false, (3*60)+43],
+		['Bohemian Rhapsody', 'Queen', 'sound/Bohemian Rhapsody.mp3', 'image/Queen.jpg', false, (5*60)+55],
+		['Boulevard of Broken Dreams', 'Greenday', 'sound/Boulevard of Broken Dreams.mp3', 'image/Greenday.jpg', false, (4*60)+20],
+		['Californication', 'Red Hot Chili Peppers', 'sound/Californication.mp3', 'image/Chili Peppers.jpg', false, (5*60)+21],
+		['Centuries', 'Fall out Boy', 'sound/Centuries.mp3', 'image/Fall out boy.png', false, (3*60)+48],
+		['Good Good Father', 'Chris Tomlin', 'sound/Good Good Father.mp3', 'image/Chris Tomlin.jpg', false, (4*60)+57],
+		['Heathens', 'Twenty-one Pilots', 'sound/Heathens.mp3', 'image/Twenty-one polits.jpg', false, (3*60)+26],
+		['Immortals', 'Fall out Boy', 'sound/Immortals.mp3', 'image/Fall out boy.png', false, (3*60)+9],
+		['Kahoot', ' ', 'sound/Kahoot.mp3', 'image/Kahoot.png', false, 66],
+		['Light em Up', 'Fall out Boy', 'sound/Light em Up.mp3', 'image/Fall out boy.png', false, (3*60)+5],
+		['Lose Yourself', 'Eminem', 'sound/Lose Yourself.mp3', 'image/Eminem.jpg', false, (5*60)+23],
+		['On top of the World', 'Imagine Dragons', 'sound/On Top Of the World.mp3', 'image/Imagine Dragons.jpg', false, (4*60)+2],
+		['Paradise', 'Coldplay', 'sound/Paradise.mp3', 'image/Coldplay.jpg', false, (4*60)+19],
+		['Radioactive', 'Imagine Dragons', 'sound/Radioactive.mp3', 'image/Imagine Dragons.jpg', false, (3*60)+7],
+		['Renegades', 'X Ambassador', 'sound/Renegades.mp3', 'image/X _ambassadors.jpg', false, (3*60)+14],
+		['Sail', 'AWOLNATION', 'sound/Sail.mp3', 'image/Awolnation.jpg', false, (4*60)+32],
+		['Seven Nation Army', 'The white Flags', 'sound/Seven Nation Army.mp3', 'image/White flag.jpg', false, (3*60)+59],
+		['Stressed Out', 'Twenty-one Pilots', 'sound/Stressed Out.mp3', 'image/Twenty-one polits.jpg', false, (3*60)+22],
+		['Viva La Vida', 'Coldplay', 'sound/Viva La Vida.mp3', 'image/Coldplay.jpg', false, (4*60)+1],
+		['Welcome to the Black Parade', 'My Chemical Romance', 'sound/Welcome to the Black Parade.mp3', 'image/my chemicle romance.jpg', false, (5*60)+16],
+		['Without Me', 'Eminem', 'sound/Without Me.mp3', 'image/Eminem.jpg', false, (4*60)+59],
+		['Yellow', 'Coldplay', 'sound/Yellow.mp3', 'image/Coldplay.jpg', false, (4*60)+32],
+		["You're gonna go far, kid", 'The Offsprings', "sound/Youre gonna go far kid.mp3", 'image/the offsprings.jpg', false, (3*60)+02],
+		["Sabotage", 'Beastie Boys', "sound/Sabotage.mp3", 'image/beastie boy.jpg', false, (3*60)+09],
+		["Can't Stop", 'Red Hot Chili Peppers', "sound/Cant stop.mp3", 'image/Chili Peppers.jpg', false, (4*60)+31],
+		["Under the Bridge", 'Red Hot Chili Peppers', "sound/Under the Bridge.mp3", 'image/Chili Peppers.jpg', false, (4*60)+22],
+	]
+	var hasstart = false;
+	var audio;
+	var ispause = 'yes';
+	var timer = 0;
+	var i = 0;
+	var toggle = false;
+
+	function pick(){
+		if(hasstart == true){
+			audio.pause();
+		}
+		i = Math.floor(Math.random()*(playlist.length)*1)/1;
+		if(playlist[i][4] == false){
+			document.getElementById('title').innerText = playlist[i][0];
+			document.getElementById('artist').innerText = playlist[i][1];
+			document.getElementById('images').src = playlist[i][3];
+			playlist[i][4] = true;
+			audio = new Audio(playlist[i][2]);
+			audio.play();
+			hasstart = true;
+			timer = 0;
+		}else{
+			pick();
+		}
+	}
+
+	setInterval( function (){
+		if(ispause == 'yes'){
+			timer = timer + 1;
+		}
+		if(timer > playlist[i][5]){
+			pick();
+		}
+	}, 1000)
+
+	function pause(){
+		if(ispause == 'yes'){
+			audio.pause();
+			ispause = 'no';
+			document.getElementById('player').src = 'image/play.png';
+		} else {
+			audio.play();
+			ispause = 'yes';
+			document.getElementById('player').src = 'image/pause.png';
+		}
+	}
+
+	window.addEventListener("keydown", onkeydown);
+	function onkeydown(e) {
+		 if(e.keyCode==13) {changer()} //Enter
+	}
+
+	function changer(){
+		if(toggle == true){
+			document.getElementById('cover').style.left = '200%';
+			toggle = false;
+		} else {
+			document.getElementById('cover').style.left = '50%';
+			toggle = true;
+		}
+	}
+
+	function restart(){
+		if(hasstart == true){
+			audio.pause();
+			audio = new Audio(playlist[i][2]);
+			audio.play();
+		}
+
+	}
+
+</script>
+</html>
